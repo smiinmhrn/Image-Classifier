@@ -17,4 +17,8 @@ void previous_step(string previous_step);
 
 int valid_input(string input);
 
+void print_image(float image[IMAGE_SIZE][IMAGE_SIZE]);
+
+void explore_images_from_dataset();
+
 #endif
