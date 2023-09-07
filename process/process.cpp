@@ -124,7 +124,7 @@ void main_menu()
 
         case MAIN_MENU_OPTIONS::EXPLORE:
             clear_terminal();
-            cout << "EXPLORING...";
+            explore_images_from_dataset();
 
             should_exit = true;
             break;
@@ -297,4 +297,91 @@ int valid_input(string input)
             cin >> input;
         }
     }
+}
+
+void print_image(float image[IMAGE_SIZE][IMAGE_SIZE])
+{
+
+    for (int i = 0; i < 28; i++)
+    {
+        for (int j = 0; j < 28; j++)
+        {
+            if (image[i][j] == 0)
+            {
+                cout << " ";
+            }
+            else
+            {
+                cout << "*";
+            }
+        }
+        cout << endl;
+    }
+}
+
+void explore_images_from_dataset()
+{
+    cout << "[ EXPLORE IMAGES FROM DATASET]"
+         << endl
+         << "Enter the lable from 0 to 9 :"
+         << endl;
+
+    string input_lable;
+    cin >> input_lable;
+
+    int lable = valid_input(input_lable);
+
+    while (true)
+    {
+        if (lable >= 0 && lable <= 9)
+            break;
+        else
+        {
+            cout << "your choice is out of bound. Please try again :"
+                 << endl;
+
+            cin >> input_lable;
+            lable = valid_input(input_lable);
+        }
+    }
+
+    string image_path = interpolation("data\\mnist", "train", to_string(lable));
+
+    cout << "Enter the number of images from 0 to 1000 :"
+         << endl;
+
+    string input_number;
+    cin >> input_number;
+
+    int number = valid_input(input_number);
+
+    while (true)
+    {
+        if (number >= 0 && number <= 1000)
+            break;
+        else
+        {
+            cout << "your choice is out of bound. Please try again :"
+                 << endl;
+
+            cin >> input_number;
+            number = valid_input(input_number);
+        }
+    }
+
+    float image[IMAGE_SIZE][IMAGE_SIZE];
+
+    load_image(image_path, number, image);
+
+    print_image(image);
+
+    cout << "FINAL RESULT IS ->"
+         << endl
+         << " LABLE OF CHOSEN IMAGE : "
+         << lable
+         << " NUMBER OF CHOSEN IMAGE : "
+         << number
+         << endl;
+
+    previous_step("main_menu");
 }
