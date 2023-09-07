@@ -383,5 +383,38 @@ void explore_images_from_dataset()
          << number
          << endl;
 
-    previous_step("main_menu");
+    previous_step("main_menu");     
+}
+
+float math_matrix_average(float matrix[IMAGE_SIZE][IMAGE_SIZE],
+                          int x_start, int x_end, int y_start, int y_end)
+{
+    float sum = 0;
+
+    for (int i = x_start; i < x_end; i++)
+    {
+        for (int j = y_start; j < y_end; j++)
+        {
+            sum += matrix[i][j];
+        }
+    }
+
+    return sum / 49;
+}
+
+float math_matrix_standard_deviation(float matrix[IMAGE_SIZE][IMAGE_SIZE],
+                                     int x_start, int x_end, int y_start, int y_end, float avrg)
+{
+    float sum = 0;
+
+    for (int i = x_start; i < x_end; i++)
+    {
+
+        for (int j = y_start; j < y_end; j++)
+        {
+
+            sum += pow((matrix[i][j] - avrg), 2);
+        }
+    }
+    return sqrt(sum / 48);
 }
