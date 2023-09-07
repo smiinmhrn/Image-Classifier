@@ -5,9 +5,12 @@ void clear_terminal();
 
 void start_menu();
 
-int valid_input(string input);
-
 void main_menu();
 
+void info_menu();
+
+void previous_step(string previous_step);
+
+int valid_input(string input);
 
 #endif
