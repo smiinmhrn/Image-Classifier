@@ -11,13 +11,20 @@ enum START_MENU {
     EXIT = 3
 };
 
+enum MAIN_MENU_OPTIONS
+{
+    EXPLORE = 1,
+    TRAIN = 2,
+    TEST = 3,
+    RETURN = 4
+};
+
 void clear_terminal() {
     #ifdef _WIN32
     system("cls"); 
     #else
     sysetm("clear");
     #endif
-
 }
 
 void start_menu() {
@@ -28,7 +35,7 @@ void start_menu() {
          << endl
          << "2- Info"
          << endl
-         << "4- Exit"
+         << "3- Exit"
          << endl
          << "Please enter your command :"
          << endl;
@@ -46,31 +53,95 @@ void start_menu() {
         {
         case START_MENU::MAIN_MENU :
             clear_terminal();
-            cout << "c 1";
+            main_menu();
+
             should_exit = true;
             break;
 
         case START_MENU::INFO :
             clear_terminal();
             cout << "c 2";
+
             should_exit = true;
             break;
 
         case START_MENU::EXIT :
             clear_terminal();
-            cout << "c 3";
+            cout << "Program closed 100%";
+
             should_exit = true;
             break;
 
         default:
             cout << "Please choose from the options above" << endl;
             cin >> input;
-            command = valide_input(input);
+            command = valid_input(input);
             break;
         } 
     }
+}
+
+void main_menu() {
     
-    
+    cout << "[ MAIN MENU ]"
+             << endl
+             << "1- Explore images from dataset"
+             << endl
+             << "2- Train"
+             << endl
+             << "3- Test"
+             << endl
+             << "4- Return"
+             << endl
+             << "Please enter your command :"
+             << endl;
+
+    string input;
+    cin >> input;
+
+    int command = valid_input(input);
+
+    bool should_exit = false; 
+
+    while (!should_exit)
+    {
+        switch (command)
+        {
+        case MAIN_MENU_OPTIONS::EXPLORE :
+            clear_terminal();
+            cout << "EXPLORING...";
+
+            should_exit = true;
+            break;
+
+        case MAIN_MENU_OPTIONS::TRAIN :
+            clear_terminal();
+            cout << "TRAINING...";
+
+            should_exit = true;
+            break;
+
+        case MAIN_MENU_OPTIONS::TEST :
+            clear_terminal();
+            cout << "TESTING...";
+
+            should_exit = true;
+            break;
+
+        case MAIN_MENU_OPTIONS::RETURN :
+            clear_terminal();
+            start_menu();
+
+            should_exit = true;
+            break;
+
+        default:
+            cout << "Please choose from the options above" << endl;
+            cin >> input;
+            command = valid_input(input);
+            break;
+        } 
+    }
 }
 
 int valid_input(string input) {
