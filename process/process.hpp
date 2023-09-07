@@ -21,4 +21,10 @@ void print_image(float image[IMAGE_SIZE][IMAGE_SIZE]);
 
 void explore_images_from_dataset();
 
+float math_matrix_average(float matrix[IMAGE_SIZE][IMAGE_SIZE],
+                          int x_start, int x_end, int y_start, int y_end);
+
+float math_matrix_standard_deviation(float matrix[IMAGE_SIZE][IMAGE_SIZE],
+                                     int x_start, int x_end, int y_start, int y_end, float avrg);
+
 #endif
