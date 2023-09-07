@@ -2,8 +2,12 @@
 #define PROCESS_PROCESS
 
 void clear_terminal();
+
 void start_menu();
+
 int valid_input(string input);
+
+void main_menu();
 
 
 #endif
