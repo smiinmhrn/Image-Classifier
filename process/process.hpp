@@ -39,4 +39,25 @@ float act_of_distance_array_and_matrix(float array[], float matrix[][NUMBER_OF_F
 
 void training(FEATURES_LABELS &data);
 
+void act_of_fill_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES],
+                            FEATURES_LABELS &dataset,
+                            vector<int> &min_lables, vector<float> &k_min, int i);
+
+void act_of_shift_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES],
+                             FEATURES_LABELS &dataset,
+                             vector<int> &min_lables, vector<float> &k_min, int i);
+
+void test_features(FEATURES_LABELS &data, float distance[NUMBER_OF_FEATURES],
+                   float image[IMAGE_SIZE][IMAGE_SIZE]);
+
+int act_of_testing(float image[IMAGE_SIZE][IMAGE_SIZE], int k,
+                   FEATURES_LABELS &data, float &closest_distance);
+
+int act_of_finding_most_repeated_lable(vector<int> k_times_min_lables, float &closest_distance);
+
+void testing(FEATURES_LABELS &data);
+
+void final_massage(string predicted_lable, int lable,
+                   int k, float closest_distance);
+
 #endif

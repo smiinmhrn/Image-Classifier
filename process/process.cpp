@@ -144,7 +144,7 @@ void main_menu()
 
         case MAIN_MENU_OPTIONS::TEST:
             clear_terminal();
-            cout << "TESTING...";
+            testing(data);
 
             should_exit = true;
             break;
@@ -511,9 +511,9 @@ void act_of_fill_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES
     min_lables.push_back(dataset.label[i]);
 }
 
-void act_of_switch_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES],
-                              FEATURES_LABELS &dataset,
-                              vector<int> &min_lables, vector<float> &k_min, int i)
+void act_of_shift_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES],
+                             FEATURES_LABELS &dataset,
+                             vector<int> &min_lables, vector<float> &k_min, int i)
 {
     min = distance[i];
     k_min.erase(k_min.begin());
@@ -555,8 +555,8 @@ int act_of_testing(float image[IMAGE_SIZE][IMAGE_SIZE], int k,
         }
         else if (distance[i] <= predicted_min && k_times_min.size() == k)
         {
-            act_of_switch_the_vector(&predicted_min, &distance, data,
-                                     &k_times_min_lables, &k_times_min, i);
+            act_of_shift_the_vector(&predicted_min, &distance, data,
+                                    &k_times_min_lables, &k_times_min, i);
         }
     }
     return act_of_finding_most_repeated_lable(k_times_min_lables, closest_distance);
