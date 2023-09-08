@@ -120,6 +120,7 @@ void main_menu()
     int command = valid_input(input);
 
     bool should_exit = false;
+    FEATURES_LABELS data;
 
     while (!should_exit)
     {
@@ -135,7 +136,7 @@ void main_menu()
 
         case MAIN_MENU_OPTIONS::TRAIN:
             clear_terminal();
-            cout << "TRAINING...";
+            training(data);
 
             should_exit = true;
             break;
@@ -482,4 +483,19 @@ float act_of_distance_array_and_matrix(float array[], float matrix[][NUMBER_OF_F
     {
         distance[i] = act_of_distance_two_arrays(array, matrix[i], NUMBER_OF_FEATURES);
     }
+}
+
+void training(FEATURES_LABELS &data)
+{
+    cout << "[TRAINING]"
+         << endl
+         << "Training ..."
+         << endl;
+
+    act_of_training(data);
+
+    cout << "Action Completed 100%" << endl;
+
+    //accurancy 
+    previous_step("main_menu");
 }
