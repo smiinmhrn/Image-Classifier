@@ -27,6 +27,12 @@ enum INFO_OPTIONS
     INFO_RETURN = 3
 };
 
+struct FEATURES_LABELS
+{
+    float features_of_matrix[NUMBER_OF_TRAINED_IMAGES][NUMBER_OF_FEATURES];
+    int label[NUMBER_OF_TRAINED_IMAGES];
+};
+
 void clear_terminal()
 {
 #ifdef _WIN32
@@ -59,7 +65,6 @@ void start_menu()
 
     while (!should_exit)
     {
-
         switch (command)
         {
 
@@ -118,7 +123,6 @@ void main_menu()
 
     while (!should_exit)
     {
-
         switch (command)
         {
 
@@ -182,7 +186,6 @@ void info_menu()
 
     while (!should_exit)
     {
-
         switch (command)
         {
 
@@ -256,7 +259,6 @@ void previous_step(string previous_step)
             break;
         else
         {
-
             cout << "Please choose from the options above" << endl;
             cin >> input;
             command = valid_input(input);
@@ -285,7 +287,6 @@ int valid_input(string input)
 
     while (true)
     {
-
         try
         {
             int command = stoi(input);
@@ -383,7 +384,7 @@ void explore_images_from_dataset()
          << number
          << endl;
 
-    previous_step("main_menu");     
+    previous_step("main_menu");
 }
 
 float math_matrix_average(float matrix[IMAGE_SIZE][IMAGE_SIZE],
@@ -398,7 +399,6 @@ float math_matrix_average(float matrix[IMAGE_SIZE][IMAGE_SIZE],
             sum += matrix[i][j];
         }
     }
-
     return sum / 49;
 }
 
@@ -409,12 +409,77 @@ float math_matrix_standard_deviation(float matrix[IMAGE_SIZE][IMAGE_SIZE],
 
     for (int i = x_start; i < x_end; i++)
     {
-
         for (int j = y_start; j < y_end; j++)
         {
-
             sum += pow((matrix[i][j] - avrg), 2);
         }
     }
     return sqrt(sum / 48);
+}
+
+void act_of_training(FEATURES_LABELS &data)
+{
+    int index = 0;
+    srand(time(NULL));
+
+    for (int i = 0; i < 10; i++)
+    {
+        string lable = '0' + i;
+
+        string image_path = interpolation("data\\mnist", "train", lable);
+
+        for (int j = 0; i < 500; i++)
+        {
+            float image[IMAGE_SIZE][IMAGE_SIZE];
+
+            int number = (rand() % file_count(image_path)) + 1;
+
+            load_image(image_path, number, image);
+
+            act_of_extracting_features(data.features_of_matrix[index], image);
+            dataset.label[index] = i;
+
+            index += 1;
+        }
+    }
+}
+
+void act_of_extracting_features(float matrix[IMAGE_SIZE][IMAGE_SIZE],
+                                float save_features[])
+{
+    int index = 0;
+
+    for (int i = 0; i < IMAGE_SIZE; i += 7)
+    {
+        for (int j = 0; j < IMAGE_SIZE; j += 7)
+        {
+            int x_end = i + 7;
+            int y_end = j + 7;
+
+            float avrg = math_matrix_average(matrix, i, x_end, j, y_end);
+            save_features[index] = avrg;
+            save_features[index + 1] = math_matrix_standard_deviation(matrix, i, x_end, j, y_end, avrg);
+            index += 2;
+        }
+    }
+}
+
+float act_of_distance_two_arrays(float first_array[], float second_array[], int continu)
+{
+    float sum = 0;
+
+    for (int i = 0; i < continu; i++)
+    {
+        sum += pow((first_array[i] - second_array[i], 2));
+    }
+    return sqrt(sum);
+}
+
+float act_of_distance_array_and_matrix(float array[], float matrix[][NUMBER_OF_FEATURES],
+                                       float distance[])
+{
+    for (int i = 0; i < NUMBER_OF_TRAINED_IMAGES; i++)
+    {
+        distance[i] = act_of_distance_two_arrays(array, matrix[i], NUMBER_OF_FEATURES);
+    }
 }
