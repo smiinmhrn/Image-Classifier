@@ -34,7 +34,7 @@ void act_of_extracting_features(float matrix[IMAGE_SIZE][IMAGE_SIZE],
 
 float act_of_distance_two_arrays(float first_array[], float second_array[], int continu);
 
-float (float array[], float matrix[][NUMBER_OF_FEATURES],
+float act_of_distance_array_and_matrix(float array[], float matrix[][NUMBER_OF_FEATURES],
                                        float distance[]);
 
 void training(FEATURES_LABELS &data);

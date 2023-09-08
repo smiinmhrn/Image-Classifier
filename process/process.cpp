@@ -4,6 +4,7 @@
 #include <string>
 
 using namespace std;
+bool did_trained = false;
 
 enum START_MENU
 {
@@ -496,6 +497,189 @@ void training(FEATURES_LABELS &data)
 
     cout << "Action Completed 100%" << endl;
 
-    //accurancy 
+    // accurancy
+    did_trained = true;
     previous_step("main_menu");
+}
+
+void act_of_fill_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES],
+                            FEATURES_LABELS &dataset,
+                            vector<int> &min_lables, vector<float> &k_min, int i)
+{
+    min = distance[i];
+    k_min.push_back(min);
+    min_lables.push_back(dataset.label[i]);
+}
+
+void act_of_switch_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES],
+                              FEATURES_LABELS &dataset,
+                              vector<int> &min_lables, vector<float> &k_min, int i)
+{
+    min = distance[i];
+    k_min.erase(k_min.begin());
+    k_min.push_back(min);
+
+    min_lables.erase(min_lables.begin());
+    min_lables.push_back(dataset.label[i]);
+}
+
+void test_features(FEATURES_LABELS &data, float distance[NUMBER_OF_FEATURES],
+                   float image[IMAGE_SIZE][IMAGE_SIZE])
+{
+    float test_features[NUMBER_OF_FEATURES];
+    act_of_extracting_features(test_features, image);
+
+    act_of_distance_array_and_matrix(test_features, data.matrix_features, distance);
+}
+
+int act_of_testing(float image[IMAGE_SIZE][IMAGE_SIZE], int k,
+                   FEATURES_LABELS &data, float &closest_distance)
+{
+
+    float distance[NUMBER_OF_FEATURES];
+
+    test_features(data, distance, image);
+
+    float predicted_min = 1000;
+    float distance[NUMBER_OF_TRAINED_IMAGES];
+
+    vector<float> k_times_min;
+    vector<int> k_times_min_lables;
+
+    for (int i = 0; i < NUMBER_OF_TRAINED_IMAGES; i++)
+    {
+        if (distance[i] <= predicted_min && k_times_min.size() < k)
+        {
+            act_of_fill_the_vector(&predicted_min, &distance, data,
+                                   &k_times_min_lables, &k_times_min, i);
+        }
+        else if (distance[i] <= predicted_min && k_times_min.size() == k)
+        {
+            act_of_switch_the_vector(&predicted_min, &distance, data,
+                                     &k_times_min_lables, &k_times_min, i);
+        }
+    }
+    return act_of_finding_most_repeated_lable(k_times_min_lables, closest_distance);
+}
+
+int act_of_finding_most_repeated_lable(vector<int> k_times_min_lables, float &closest_distance)
+{
+    int max_repeated = 0;
+    int max_repeated_lbl;
+    int count = 0;
+
+    for (int i = 0; i < k_times_min_lables.size(); i++)
+    {
+        for (int j = 0; j < k_times_min_lables.size(); j++)
+        {
+            if (k_times_min_lables[i] == k_times_min_lables[j])
+            {
+                count++;
+            }
+            if (count >= max_repeated)
+            {
+                max_repeated = count;
+                max_repeated_lbl = k_times_min_lables[i];
+            }
+        }
+    }
+    closest_distance = k_times_min_lables.back();
+    return max_repeated_lbl;
+}
+
+void testing(FEATURES_LABELS &data)
+{
+    cout << "[ TESTING ]"
+         << endl
+         << "Enter the lable from 0 to 9 :"
+         << endl;
+
+    string input_lable;
+    cin >> input_lable;
+
+    int lable = valid_input(input_lable);
+
+    while (true)
+    {
+        if (lable >= 0 && lable <= 9)
+            break;
+        else
+        {
+            cout << "your choice is out of bound. Please try again :"
+                 << endl;
+
+            cin >> input_lable;
+            lable = valid_input(input_lable);
+        }
+    }
+
+    string image_path = interpolation("data\\mnist", "test", to_string(lable));
+
+    cout << "Enter the number of images from 0 to 1000 :"
+         << endl;
+
+    string input_number;
+    cin >> input_number;
+
+    int number = valid_input(input_number);
+
+    while (true)
+    {
+        if (number >= 0 && number <= 1000)
+            break;
+        else
+        {
+            cout << "your choice is out of bound. Please try again :"
+                 << endl;
+
+            cin >> input_number;
+            number = valid_input(input_number);
+        }
+    }
+
+    cout << "Please enter the k parameter"
+         << endl
+         << "K : " << endl;
+
+    string input_k;
+    cin >> input_k;
+
+    int k = valid_input(input_k);
+
+    if (did_trained == false)
+    {
+        training(data);
+    }
+
+    float image[IMAGE_SIZE][IMAGE_SIZE];
+
+    load_image(image_path, number, image);
+
+    print_image(image);
+
+    float closest_distance;
+    string closest_lable = '0' + act_of_testing(image, k, data, &closest_distance);
+
+    final_massage(closest_lable, lable, k, closest_distance);
+    previous_step("main_menu");
+}
+
+void final_massage(string predicted_lable, int lable,
+                   int k, float closest_distance)
+{
+    cout << "Testing..."
+         << endl
+         << "[ Action Completed 100% ] THE RESULT IS"
+         << endl
+         << "{"
+         << endl
+         << "PREDICTED LABLE IS : " << predicted_lable << " ->"
+         << "REAL LABLE IS : " << lable
+         << endl
+         << "ACCORDING TO THE ALGORITHM WITH CHOOSEN K PARAMETER [ " << k << " ]"
+         << endl
+         << "THE CLOSEST DISTANCE WITH MOST SIMILAR IMAGE IS : " << closest_distance
+         << endl
+         << "}"
+         << endl;
 }
