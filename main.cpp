@@ -3,5 +3,6 @@
 #include "process\\process.hpp"
 
 int main() {
+    Timer timer;
     start_menu();
 }

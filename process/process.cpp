@@ -28,7 +28,7 @@ enum INFO_OPTIONS
     INFO_RETURN = 3
 };
 
-struct FEATURES_LABELS
+struct FEATURES_TMP
 {
     float features_of_matrix[NUMBER_OF_TRAINED_IMAGES][NUMBER_OF_FEATURES];
     int label[NUMBER_OF_TRAINED_IMAGES];
@@ -121,7 +121,7 @@ void main_menu()
     int command = valid_input(input);
 
     bool should_exit = false;
-    FEATURES_LABELS data;
+    FEATURES_TMP data;
 
     while (!should_exit)
     {
@@ -419,7 +419,7 @@ float math_matrix_standard_deviation(float matrix[IMAGE_SIZE][IMAGE_SIZE],
     return sqrt(sum / 48);
 }
 
-void act_of_training(FEATURES_LABELS &data)
+void act_of_training(FEATURES_TMP &data)
 {
     int index = 0;
     srand(time(NULL));
@@ -486,7 +486,7 @@ float act_of_distance_array_and_matrix(float array[], float matrix[][NUMBER_OF_F
     }
 }
 
-void training(FEATURES_LABELS &data)
+void training(FEATURES_TMP &data)
 {
     cout << "[TRAINING]"
          << endl
@@ -506,7 +506,7 @@ void training(FEATURES_LABELS &data)
 }
 
 void act_of_fill_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES],
-                            FEATURES_LABELS &dataset,
+                            FEATURES_TMP &dataset,
                             vector<int> &min_lables, vector<float> &k_min, int i)
 {
     min = distance[i];
@@ -515,7 +515,7 @@ void act_of_fill_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES
 }
 
 void act_of_shift_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGES],
-                             FEATURES_LABELS &dataset,
+                             FEATURES_TMP &dataset,
                              vector<int> &min_lables, vector<float> &k_min, int i)
 {
     min = distance[i];
@@ -526,7 +526,7 @@ void act_of_shift_the_vector(float &min, float &distance[NUMBER_OF_TRAINED_IMAGE
     min_lables.push_back(dataset.label[i]);
 }
 
-void test_features(FEATURES_LABELS &data, float distance[NUMBER_OF_FEATURES],
+void test_features(FEATURES_TMP &data, float distance[NUMBER_OF_FEATURES],
                    float image[IMAGE_SIZE][IMAGE_SIZE])
 {
     float test_features[NUMBER_OF_FEATURES];
@@ -536,7 +536,7 @@ void test_features(FEATURES_LABELS &data, float distance[NUMBER_OF_FEATURES],
 }
 
 int act_of_testing(float image[IMAGE_SIZE][IMAGE_SIZE], int k,
-                   FEATURES_LABELS &data, float &closest_distance)
+                   FEATURES_TMP &data, float &closest_distance)
 {
 
     float distance[NUMBER_OF_FEATURES];
@@ -590,7 +590,7 @@ int act_of_finding_most_repeated_lable(vector<int> k_times_min_lables, float &cl
     return max_repeated_lbl;
 }
 
-void testing(FEATURES_LABELS &data)
+void testing(FEATURES_TMP &data)
 {
     cout << "[ TESTING ]"
          << endl
@@ -687,7 +687,7 @@ void final_massage(string predicted_lable, int lable,
          << endl;
 }
 
-float calculate_accurancy_of_algorithm(FEATURES_LABELS &data)
+float calculate_accurancy_of_algorithm(FEATURES_TMP &data)
 {
     int count = 0;
     float closest_distance;
