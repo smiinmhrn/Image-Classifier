@@ -497,7 +497,10 @@ void training(FEATURES_LABELS &data)
 
     cout << "Action Completed 100%" << endl;
 
-    // accurancy
+    cout << "THE ACCURANCY OF THE ALGORITHM IS -> "
+         << calculate_accurancy_of_algorithm()
+         << endl;
+
     did_trained = true;
     previous_step("main_menu");
 }
@@ -682,4 +685,28 @@ void final_massage(string predicted_lable, int lable,
          << endl
          << "}"
          << endl;
+}
+
+float calculate_accurancy_of_algorithm(FEATURES_LABELS &data)
+{
+    int count = 0;
+    float closest_distance;
+
+    for (int i = 0; i < 10; i++)
+    {
+        string lable = '0' + i;
+        string image_path = interpolation("data\\mnist", "test", label);
+
+        for (int j = 1; j < file_count(image_path); j++)
+        {
+            float image[IMAGE_SIZE][IMAGE_SIZE];
+            load_image(image_path, j, image);
+
+            if (act_of_testing(image, 1, data, closest_distance) == i)
+            {
+                count++;
+            }
+        }
+    }
+    return ((count / 10000) * 100);
 }
